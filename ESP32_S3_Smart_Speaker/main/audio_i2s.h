@@ -2,6 +2,6 @@
 #define AUDIO_I2S_H
 
 void audio_i2s_init(void);
-void audio_passthrough_task(void *pvParameters);
+void audio_rx_task(void *pvParameters); // Имя обновлено!
 
-#endif // AUDIO_I2S_H 
+#endif
