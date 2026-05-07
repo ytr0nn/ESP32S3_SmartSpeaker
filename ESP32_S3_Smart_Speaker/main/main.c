@@ -1,44 +1,35 @@
-#include "main.h"
+#include <stdio.h>
 #include "esp_log.h"
-#include "audio_i2s.h"
-#include "ui_hardware.h"
-#include "network_api.h"
-#include "wake_word.h" 
+#include "nvs_flash.h"
+#include "esp_event.h"
+#include "sys_manager.h"
 
-static const char *TAG = "APP_MAIN";
+static const char *TAG = "MAIN";
 
-// global ring buffer handle for audio data
-RingbufHandle_t audio_rx_ringbuf = NULL;
+void app_main(void)
+{
+    ESP_LOGI(TAG, "Starting Smart AI Speaker Initialization YURII OSYPENKO");
+    ESP_LOGI(TAG, "Free heap: %" PRIu32 " bytes", esp_get_free_heap_size());
 
-void app_main(void) {
-    ESP_LOGI(TAG, "Starting Smart Speaker initialization...");
-
-    // 1. memory and network init
-    network_system_init();
-
-    // 2. UI init
-    ui_hardware_init();
-
-    // 3. create ring buffer for audio data
-    audio_rx_ringbuf = xRingbufferCreate(RINGBUF_SIZE, RINGBUF_TYPE_BYTEBUF);
-    if (audio_rx_ringbuf == NULL) {
-        ESP_LOGE(TAG, "Failed to create audio ring buffer!");
-        return;
-    }
-    ESP_LOGI(TAG, "Audio RingBuffer created successfully.");
-
-    // 4. audio init
-    audio_i2s_init();
-
-    // 5. Esp-sr init
-    wake_word_init();
-
-    ESP_LOGI(TAG, "Hardware initialization complete!");
-
-    // 6. mic read task
-    // feed the buffer with sound
-    xTaskCreatePinnedToCore(audio_rx_task, "audio_rx_task", 4096, NULL, 5, NULL, 0);
-
+    // 1. NVS 
     // 
-    // space for ui
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_LOGW(TAG, "NVS flash error");
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+
+    // 2. (ESP Event Loop)
+    // 
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    // 3. State Machine
+    // 
+    // 
+    sys_manager_init();
+
+    ESP_LOGI(TAG, "Initialization complete. System Manager is running.");
+    
 }

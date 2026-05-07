@@ -1,8 +1,11 @@
-# Name,   Type, SubType, Offset,  Size, Flags
-nvs,      data, nvs,     ,        0x6000,
-phy_init, data, phy,     ,        0x1000,
-factory,  app,  factory, ,        3M,
-ota_0,    app,  ota_0,   ,        3M,
-ota_1,    app,  ota_1,   ,        3M,
-model,    data, spiffs,  ,        4M,
-storage,  data, spiffs,  ,        2M,
+# Name,     Type, SubType, Offset,  Size,     Flags
+# settings
+nvs,        data, nvs,     ,        0x10000, 
+# radio data
+phy_init,   data, phy,     ,        0x1000,   
+# main code
+factory,    app,  factory, ,        0x600000, 
+# model partition
+model,      data, spiffs,  ,        0x400000, 
+# space for ui and logs
+storage,    data, spiffs,  ,        0x500000,
