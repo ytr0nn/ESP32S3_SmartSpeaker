@@ -15,13 +15,13 @@
 static const char *TAG = "AI_PIPELINE";
 
 // API Keys
-#define OPENAI_API_KEY "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"
+#define OPENAI_API_KEY "YOUR_OPENAI_API_KEY_HERE"
 
-
+//Put here your keys
 //Endpoints 
-#define WHISPER_API_URL "https://api.openai.com/v1/audio/transcriptions"
-#define GEMINI_API_URL "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent\?key\=AIzaSyB008BDzfWGSsxrbZAj7GMgVTXpQjf9NOc"
-#define TTS_API_URL     "https://api.openai.com/v1/audio/speech"
+#define WHISPER_API_URL ""
+#define GEMINI_API_URL ""
+#define TTS_API_URL     ""
 
 // Task Notification Handle
 static TaskHandle_t ai_task_handle = NULL;
